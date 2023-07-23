@@ -1,8 +1,9 @@
 from flask import Blueprint, request, jsonify, g
 from models import db
-import models
 from utils.errorhandling import UserAlreadyExistsError, UserCreationError
 from auth import create_api_token, check_jwt_token
+import models
+import bcrypt
 
 
 
@@ -17,6 +18,8 @@ def get_user():
 def create():
     username = request.form.get('username')
     email = request.form.get('email')
+    password = request.form.get('password')
+    password_encoded = password.encode('utf-8')
     
     found_user = models.user.User.query.filter(
         (models.user.User.username == username) | (models.user.User.email == email)
@@ -29,9 +32,11 @@ def create():
             raise UserAlreadyExistsError('email', email)
         
     try:
+        hashed_pass = bcrypt.hashpw(password_encoded, bcrypt.gensalt())
+        print('hashed_pass', hashed_pass)
         create_user = models.user.User(
             username=username,
-            password=request.form.get('password'),
+            password=password_encoded,
             email=email
         )
         db.session.add(create_user)
@@ -44,6 +49,7 @@ def create():
 @bp.route('/login', methods=["POST"])
 def login():
     g.user = None
+    g.token = None
     username = request.form.get('username')
     email = request.form.get('email')
     password = request.form.get('password')
@@ -51,7 +57,6 @@ def login():
         ((models.user.User.username == username) | (models.user.User.email == email)) &
         (models.user.User.password == password)
     ).first()
-    print('found_user', found_user)
     token = create_api_token(found_user.user_id)
     g.user = found_user
     g.token = token
