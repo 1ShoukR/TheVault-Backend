@@ -15,11 +15,12 @@ config.read('config/config.cfg')
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = config.get('DEFAULT', 'SQLALCHEMY_DATABASE_URI')
 app.config['DEBUG'] = config.getboolean('DEFAULT', 'DEBUG')
+app.config['SECRET_KEY'] = config.get('DEFAULT', 'SECRET_KEY')
+app.config['API_JWT_SECRET'] = ''
 
 # Initialize the database for the User and StoredPasswords models
 db.init_app(app)
 
-print(db)
 
 # Register your blueprints
 app.register_blueprint(routes.user.bp, url_prefix='/api/users')
