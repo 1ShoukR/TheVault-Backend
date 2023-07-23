@@ -1,7 +1,8 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, g
 from models import db
 import models
 from utils.errorhandling import UserAlreadyExistsError, UserCreationError
+from auth import create_api_token, check_jwt_token
 
 
 
@@ -38,3 +39,26 @@ def create():
         return jsonify(status=200, message='User created successfully')
     except Exception as e:\
         raise UserCreationError(str(e))
+
+
+@bp.route('/login', methods=["POST"])
+def login():
+    g.user = None
+    username = request.form.get('username')
+    email = request.form.get('email')
+    password = request.form.get('password')
+    found_user = models.user.User.query.filter(
+        ((models.user.User.username == username) | (models.user.User.email == email)) &
+        (models.user.User.password == password)
+    ).first()
+    print('found_user', found_user)
+    token = create_api_token(found_user.user_id)
+    g.user = found_user
+    g.token = token
+    return jsonify(status=200, token=token, message=f'Welcome {found_user.username}')
+
+
+@bp.route('/test-decorator')
+@check_jwt_token
+def test():
+    return 'work'
