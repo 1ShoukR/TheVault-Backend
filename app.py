@@ -23,7 +23,6 @@ print(db)
 
 # Register your blueprints
 app.register_blueprint(routes.user.bp, url_prefix='/api/users')
-app.register_blueprint(routes.create_db.bp, url_prefix='/api/db')
 
 # Ensure the table is created before serving the app
 with app.app_context():
