@@ -1,19 +1,9 @@
-from sqlalchemy import and_, cast, or_, orm
-from flask import Flask
-import sqlalchemy as sa
-import typing as t
-from models import db
-from flask_sqlalchemy import SQLAlchemy
-
-
-
-
-
-
+from . import db
 
 class User(db.Model):
     __tablename__ = 'user'
-    user_id:int = sa.Column(sa.Integer, primary_key=True)
-    username:str = sa.Column(sa.String, unique=True)
-    password:str = sa.Column(sa.String)
-    email:str = sa.Column(sa.String, unique=True)
+    user_id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    password = db.Column(db.String(120), nullable=False)
+    email = db.Column(db.String(200), unique=True, nullable=False)
+    stored_passwords = db.relationship('StoredPasswords', backref='user', lazy=True)
