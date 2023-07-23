@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from models import db
 import models
 from utils.errorhandling import UserAlreadyExistsError, UserCreationError
@@ -35,6 +35,6 @@ def create():
         )
         db.session.add(create_user)
         db.session.commit()
-        return 'done'
+        return jsonify(status=200, message='User created successfully')
     except Exception as e:\
         raise UserCreationError(str(e))
