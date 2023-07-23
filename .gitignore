@@ -2,7 +2,7 @@
 .idea
 .vscode
 venv
-**/config/local*.cfg
+config
 __pycache__/
 *.DS_Store
 node_modules/
@@ -20,4 +20,3 @@ id_rsa
 docs/build/
 build/
 dist/
-config
