@@ -6,7 +6,6 @@ from models import db
 import routes
 import os
 import configparser
-from models.stored_passwords import StoredPasswords
 
 config = configparser.ConfigParser()
 config.read('config/config.cfg')
