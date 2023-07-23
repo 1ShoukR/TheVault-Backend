@@ -1,10 +1,8 @@
-import os
-
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from models import db
-import routes
 import os
+import routes
 import configparser
 
 config = configparser.ConfigParser()
