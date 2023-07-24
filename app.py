@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from models import db
 import os
@@ -10,6 +11,7 @@ config.read('config/config.cfg')
 
 
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = config.get('DEFAULT', 'SQLALCHEMY_DATABASE_URI')
 app.config['DEBUG'] = config.getboolean('DEFAULT', 'DEBUG')
 app.config['SECRET_KEY'] = config.get('DEFAULT', 'SECRET_KEY')
