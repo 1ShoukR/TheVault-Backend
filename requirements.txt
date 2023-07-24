@@ -6,3 +6,4 @@ flask-mysql
 pymysql
 PyJWT
 bcrypt
+mysqlclient
