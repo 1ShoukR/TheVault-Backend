@@ -18,4 +18,4 @@ class User(db.Model):
     username:str = db.Column(db.String(80), unique=True, nullable=False)
     password:str = db.Column(db.String(120), nullable=False)
     email:str = db.Column(db.String(200), unique=True, nullable=False)
-    stored_passwords = db.relationship('StoredPasswords', backref='user', lazy=True)
+    stored_passwords = db.relationship('StoredPasswordsAndEmails', backref='user', lazy=True)
