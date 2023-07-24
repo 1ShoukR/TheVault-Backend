@@ -16,9 +16,10 @@ def get_user():
 
 @bp.route('/create', methods=['POST'])
 def create():
-    username = request.form.get('username')
-    email = request.form.get('email')
-    password = request.form.get('password')
+    print('request',request.json)
+    username = request.json['username']
+    email = request.json['email']
+    password = request.json['password']
 
     # Generate a random salt
     salt = bcrypt.gensalt()
@@ -44,9 +45,8 @@ def create():
         )
 
         create_person = models.user.Person(
-            first_name=request.form.get('first_name'),
-            last_name=request.form.get('last_name'),
-            address=request.form.get('address'),
+            first_name=request.json['firstname'],
+            last_name=request.json['lastname'],
             user=create_user 
         )
 
@@ -61,9 +61,9 @@ def create():
 def login():
     g.user = None
     g.token = None
-    username = request.form.get('username')
-    email = request.form.get('email')
-    password = request.form.get('password')
+    username = request.json.get('username')
+    email = request.json.get('email')
+    password = request.json.get('password')
 
     # Find the user by username or email
     found_user = models.user.User.query.filter(
