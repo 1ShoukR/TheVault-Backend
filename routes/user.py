@@ -57,28 +57,6 @@ def create():
     except Exception as e:
         raise UserCreationError(str(e))
 
-@bp.route('/login', methods=["POST"])
-def login():
-    g.user = None
-    g.token = None
-    username = request.json.get('username')
-    email = request.json.get('email')
-    password = request.json.get('password')
-
-    # Find the user by username or email
-    found_user = models.user.User.query.filter(
-        ((models.user.User.username == username) | (models.user.User.email == email))
-    ).first()
-
-    if found_user and bcrypt.checkpw(password.encode('utf-8'), found_user.password.encode('utf-8')):
-        # Passwords match, generate and store the token in g.token
-        token = create_api_token(found_user.user_id)
-        g.user = found_user
-        g.token = token
-        return jsonify(status=200, token=token, message=f'Welcome {found_user.username}')
-    else:
-        # User not found or password does not match
-        return jsonify(status=401, message='Invalid credentials')
 
 
 @bp.route('/test-decorator')
