@@ -15,6 +15,7 @@ job_*.txt
 id_rsa
 *.pub
 *.zip
+.flaskenv
 *.egg-info
 .coverage
 docs/build/
