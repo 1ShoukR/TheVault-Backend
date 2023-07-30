@@ -49,11 +49,13 @@ def create():
             last_name=request.json['lastname'],
             user=create_user 
         )
+        token = create_api_token(user_id=create_user.user_id)
+        print(token)
 
-        db.session.add(create_user)
-        db.session.add(create_person)
-        db.session.commit()
-        return jsonify(status=200, message='User created successfully')
+        # db.session.add(create_user)
+        # db.session.add(create_person)
+        # db.session.commit()
+        return jsonify(status=200, message='User created successfully', token=token, first_name=create_person.first_name, last_name=create_person.last_name)
     except Exception as e:
         raise UserCreationError(str(e))
 
